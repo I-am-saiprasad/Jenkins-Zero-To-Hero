@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Verify Checkout') {
             steps {
-                sh 'ls -la my-helloworld-app' // Verify that the files are checked out properly
+                sh 'ls -la my-helloworld.java' // Verify that the files are checked out properly
             }
         }
         stage('Build') {
