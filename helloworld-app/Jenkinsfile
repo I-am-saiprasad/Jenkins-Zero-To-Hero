@@ -9,6 +9,11 @@ pipeline {
                 git branch: "${BRANCH}", url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
+        stage('Verify Checkout') {
+            steps {
+                sh 'ls -la' // Check if pom.xml is present
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building the project...'
@@ -17,4 +22,3 @@ pipeline {
         }
     }
 }
-
