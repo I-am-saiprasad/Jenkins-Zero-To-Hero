@@ -22,7 +22,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'cd my-helloworld-app && mvn clean install' // Run Maven in the correct directory
+                sh 'cd my-helloworld.java && mvn clean install' // Run Maven in the correct directory
             }
         }
     }
