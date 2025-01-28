@@ -16,13 +16,19 @@ pipeline {
         }
         stage('Verify Checkout') {
             steps {
-                sh 'ls -la my-helloworld.java' // Verify that the files are checked out properly
+                sh 'ls -la helloworld-app' // Verify that the files are checked out properly
             }
         }
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'cd my-helloworld.java && mvn clean install' // Run Maven in the correct directory
+                sh 'cd helloworld-app && mvn clean install' // Maven build from the correct directory
+            }
+        }
+        stage('Run') {
+            steps {
+                echo 'Running the application...'
+                sh 'cd helloworld-app && java -cp target/classes my-helloworld' // Adjust this based on your package structure
             }
         }
     }
