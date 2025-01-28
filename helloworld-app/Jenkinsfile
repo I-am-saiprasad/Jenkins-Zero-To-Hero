@@ -1,9 +1,14 @@
 pipeline {
     agent any
     environment {
-        BRANCH = 'testbranch' // Specify the branch to checkout
+        BRANCH = 'testbranch' // Specify the branch
     }
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs() // Clean up previous builds
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: "${BRANCH}", url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
@@ -11,13 +16,13 @@ pipeline {
         }
         stage('Verify Checkout') {
             steps {
-                sh 'ls -la' // Check if pom.xml is present
+                sh 'ls -la my-helloworld-app' // Verify that the files are checked out properly
             }
         }
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'mvn clean install'
+                sh 'cd my-helloworld-app && mvn clean install' // Run Maven in the correct directory
             }
         }
     }
