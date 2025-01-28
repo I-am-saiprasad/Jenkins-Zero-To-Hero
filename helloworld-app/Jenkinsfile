@@ -1,61 +1,19 @@
 pipeline {
     agent any
-
     environment {
-        // Define environment variables
-        GIT_REPO = 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
+        BRANCH = 'testbranch' // Specify the branch to checkout
     }
-
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the testbranch
-                checkout scm: [
-                    $class: 'GitSCM',
-                    branches: [[name: 'refs/heads/testbranch']],  // This is where you specify the branch
-                    userRemoteConfigs: [[url: "${env.GIT_REPO}"]]
-                ]
+                git branch: "${BRANCH}", url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
-
         stage('Build') {
             steps {
-                // Example Build step for a Java project (with Maven)
-                script {
-                    echo 'Building the project...'
-                    sh 'mvn clean install'  // Change if using Gradle or another build tool
-                }
+                echo 'Building the project...'
+                sh 'mvn clean install'
             }
-        }
-
-        stage('Test') {
-            steps {
-                // Example Test step for a Java project (with Maven)
-                script {
-                    echo 'Running tests...'
-                    sh 'mvn test'  // This is an example for running unit tests
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Example Deploy step
-                script {
-                    echo 'Deploying the application...'
-                    // Replace with actual deployment commands (e.g., scp, rsync)
-                    sh 'echo "Deploying to production server..."'
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and Deploy successful!'
-        }
-        failure {
-            echo 'There was a failure in the pipeline.'
         }
     }
 }
