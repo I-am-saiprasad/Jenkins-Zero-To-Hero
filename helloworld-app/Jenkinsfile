@@ -2,51 +2,60 @@ pipeline {
     agent any
 
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk'
-        PATH = "$JAVA_HOME/bin:$PATH"
+        // Define environment variables
+        GIT_REPO = 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from GitHub
-                git 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
+                // Checkout the code from the testbranch
+                checkout scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: 'refs/heads/testbranch']],  // This is where you specify the branch
+                    userRemoteConfigs: [[url: "${env.GIT_REPO}"]]
+                ]
             }
         }
 
         stage('Build') {
             steps {
-                // Compile the Java code
-                sh 'javac HelloWorld.java'
+                // Example Build step for a Java project (with Maven)
+                script {
+                    echo 'Building the project...'
+                    sh 'mvn clean install'  // Change if using Gradle or another build tool
+                }
             }
         }
 
         stage('Test') {
             steps {
-                // Run the Java program
-                sh 'java HelloWorld'
-            }
-        }
-
-        stage('Archive') {
-            steps {
-                // Archive the build (if required)
-                archiveArtifacts artifacts: '**/*.class', allowEmptyArchive: true
+                // Example Test step for a Java project (with Maven)
+                script {
+                    echo 'Running tests...'
+                    sh 'mvn test'  // This is an example for running unit tests
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                // Optionally deploy your app, if needed
-                echo 'Deploying Hello World App'
+                // Example Deploy step
+                script {
+                    echo 'Deploying the application...'
+                    // Replace with actual deployment commands (e.g., scp, rsync)
+                    sh 'echo "Deploying to production server..."'
+                }
             }
         }
     }
 
     post {
-        always {
-            // Clean up actions, if any
-            echo 'Pipeline completed!'
+        success {
+            echo 'Build and Deploy successful!'
+        }
+        failure {
+            echo 'There was a failure in the pipeline.'
         }
     }
 }
