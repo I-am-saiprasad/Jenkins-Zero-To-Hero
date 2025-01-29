@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Change to the directory containing the pom.xml file
-                dir('helloworld-app') {
+                dir('Java-app') {
                     sh 'mvn clean install'
                 }
             }
