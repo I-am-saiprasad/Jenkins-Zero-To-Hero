@@ -2,15 +2,14 @@ pipeline {
     agent {
         docker {
             image 'python:3.8-slim'  // Docker image with Python
-            label 'docker-agent'    // Optional: Jenkins label for the node (if you have a specific label for Docker agents)
-            args '-u root:root'     // Optional: Run as root if you need additional permissions inside the container
+            args '-u root:root'      // Optional: Run as root if you need additional permissions inside the container
         }
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout the specific branch 'testbranch-python'
+                // Checkout the specific branch 'docker'
                 git branch: 'docker', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
@@ -28,4 +27,3 @@ pipeline {
         }
     }
 }
-
