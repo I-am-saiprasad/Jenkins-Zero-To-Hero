@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'git branch: "testbranch-python", url: "https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git"'
+                // Correct syntax for checking out a specific branch
+                git branch: 'testbranch-python', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
 
