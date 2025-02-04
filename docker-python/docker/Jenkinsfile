@@ -1,28 +1,35 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.8-slim'  // Docker image with Python
-            args '-u root:root'      // Optional: Run as root if you need additional permissions inside the container
-        }
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'python:3.8-slim'  // Replace with your Docker image name
+        GIT_REPO = 'https://github.com/I-am-saiprasad/Jenkins-ZeroToHero.git'  // Replace with your Git repository URL
+        GIT_BRANCH = 'docker'  // Replace with your target branch
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout the specific branch 'docker'
-                git branch: 'docker', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
+                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'pip install -r requirements.txt'
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest test_app.py'
+                script {
+                    dockerImage.inside {
+                        sh 'pip install -r requirements.txt'
+                        sh 'pytest'
+                    }
+                }
             }
         }
     }
