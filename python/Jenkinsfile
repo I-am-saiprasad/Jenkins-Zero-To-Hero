@@ -4,26 +4,28 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // Correct syntax for checking out a specific branch
                 git branch: 'testbranch-python', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
 
         stage('Set up Virtual Environment') {
             steps {
+                // Ensure we're using bash to run the command
                 sh 'python3 -m venv venv'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'source venv/bin/activate && pip install -r requirements.txt'
+                // Use bash to activate virtualenv and install dependencies
+                sh 'bash -c "source venv/bin/activate && pip install -r requirements.txt"'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'source venv/bin/activate && pytest test_app.py'
+                // Run tests using bash as well
+                sh 'bash -c "source venv/bin/activate && pytest test_app.py"'
             }
         }
     }
