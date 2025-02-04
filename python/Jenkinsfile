@@ -1,33 +1,28 @@
 pipeline {
-    agent any
+    agent any 
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout the specific branch 'testbranch-python'
-                git branch: 'testbranch-python', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
+                git 'git branch: "testbranch-python", url: "https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git"'
             }
         }
 
         stage('Set up Virtual Environment') {
             steps {
-                // Set up a Python virtual environment
                 sh 'python3 -m venv venv'
-                sh '. venv/bin/activate'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Install dependencies from requirements.txt
-                sh 'pip install -r requirements.txt'
+                sh 'source venv/bin/activate && pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run the tests using pytest
-                sh 'pytest test_app.py'
+                sh 'source venv/bin/activate && pytest test_app.py'
             }
         }
     }
