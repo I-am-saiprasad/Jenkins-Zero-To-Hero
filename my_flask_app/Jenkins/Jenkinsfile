@@ -16,6 +16,8 @@
         stage('Set Up Environment') {
             steps {
                 sh '''
+                    #!/bin/bash
+                    source venv/bin/activate
                     python3 -m venv $VIRTUAL_ENV
                     source $VIRTUAL_ENV/bin/activate
                     pip install -r $REQUIREMENTS
