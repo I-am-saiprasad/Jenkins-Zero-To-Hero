@@ -9,7 +9,7 @@
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'flask', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git
+                git branch: 'flask', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
             }
         }
 
