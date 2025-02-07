@@ -1,0 +1,50 @@
+  pipeline {
+    agent any
+
+    environment {
+        VIRTUAL_ENV = 'venv'
+        REQUIREMENTS = 'requirements.txt'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/your-username/your-flask-repo.git'
+            }
+        }
+
+        stage('Set Up Environment') {
+            steps {
+                sh '''
+                    python3 -m venv $VIRTUAL_ENV
+                    source $VIRTUAL_ENV/bin/activate
+                    pip install -r $REQUIREMENTS
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    source $VIRTUAL_ENV/bin/activate
+                    pytest
+                '''
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                sh '''
+                    source $VIRTUAL_ENV/bin/activate
+                    nohup python app.py &
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'deactivate'
+        }
+    }
+}
