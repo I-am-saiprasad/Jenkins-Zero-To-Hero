@@ -4,20 +4,31 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'python-flask', url: 'https://github.com/I-am-saiprasad/Jenkins-Zero-To-Hero.git'
+                git 'https://github.com/your-repo/your-flask-app.git'
+            }
+        }
+
+        stage('Set Up Virtual Environment') {
+            steps {
+                sh 'python3 -m venv myappenv'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m venv myappenv'
-                sh 'source myappenv/bin/activate && pip install -r requirements.txt'
+                sh '''
+                    . myappenv/bin/activate
+                    pip install flask
+                '''
             }
         }
 
         stage('Run Application') {
             steps {
-                sh 'source myappenv/bin/activate && python3 app.py &'
+                sh '''
+                    . myappenv/bin/activate
+                    python3 app.py &
+                '''
             }
         }
     }
